@@ -1,11 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import axios from "axios";
 import bodyParser from 'body-parser';
 
+
 const app = express();
 const port = 3000;
 
-const API_KEY = "9ab4496cfd9e1530e2cee704035d4fb1";
+const API_KEY = process.env.API_KEY;
 const URL = "https://api.openweathermap.org";
 
 const weatherDescriptions = {
@@ -92,41 +96,44 @@ const weatherImages = {
     99: "/images/weather/thunderstorm.gif"
 };
 
+const defaultWeather = {
+    temp: "--",
+    humidity: "--",
+    windSpeed: "--",
+    dayNight: "--",
+    description: "Search for a city",
+    rainChance: "--",
+    weatherImage: "/images/weather/clear.gif",
+    content: ""
+};
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-    res.render("index.ejs", {
-            temp : "",
-            humidity : "",
-            windSpeed : "",
-            dayNight : "",
-            description : "",
-            rainChance : "",
-            weatherImage : ""
-        });
+    res.render("index.ejs", defaultWeather);
 })
 
 app.post("/search", async (req, res) => {
 
     const loc = req.body.location;
-
     try{
 
         const geo = await axios.get(URL + `/geo/1.0/direct?q=${loc}&limit=1&appid=${API_KEY}`);
-
+        
+        
         if(geo.data.length === 0) {
-            return res.render("index.ejs", {content : "Location not found"});
+            return res.render("index.ejs", defaultWeather);
         }
 
         const lat = geo.data[0].lat;
         const lon = geo.data[0].lon; 
-
+        
         const weather_data = await axios.get(
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&hourly=precipitation_probability`
         );
 
-        console.log(weather_data.data);
+        
 
         const current = weather_data.data.current;
 
@@ -161,8 +168,8 @@ app.post("/search", async (req, res) => {
             weatherImage : weatherImage
         });
         
-    } catch(error) {
-        res.render("index.ejs", {content : JSON.stringify(error.response?.data)});
+    } catch(error) {    
+        res.render("index.ejs", defaultWeather);
     }
 }); 
 
