@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/styles/main.css">
+    </head>
+
+    <body>
+        <div class = "weather">
+            <div>
+                <h1>Today's Weather</h1>
+            </div>
+
+            <div class = "search">
+                <form action = "/search" id="the_form" method="post">
+                    <input type="text" id="location_input" name="location" placeholder="Enter a city">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class = "weather-container">
+                <div class="weather-image">
+                    <img src="<%= weatherImage %>" alt="<%= description %>">
+                    <p>Temperature: <%= temp %>°C</p>
+                </div>
+                
+                <div class = "weather-details">
+                    <p>Condition:</p>
+                    <p><%= description %></p>
+                </div>
+                <div class = "weather-details">
+                    <p>Humidity:</p>
+                    <p><%= humidity %>%</p>
+                </div>
+                <div class = "weather-details">
+                    <p>Wind Speed:</p>
+                    <p><%= windSpeed %> km/h</p>
+                </div>
+                <div class = "weather-details">
+                    <p>Chance of Rain:</p>
+                    <p><%= rainChance %>%</p>
+                </div>
+                <div class = "weather-details">
+                    <p>Time:</p>
+                    <p><%= dayNight %></p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
