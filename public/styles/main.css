@@ -53,16 +53,11 @@ body {
 
 .weather-container {
     display: grid;
-
     grid-template-columns: repeat(5, 1fr);
-
     grid-template-rows: auto 120px;
-
     gap: 15px;
-
     padding: 20px;
 }
-
 
 .weather-details {
     display: flex;
@@ -78,10 +73,8 @@ body {
     margin: 2px;
 }
 
-
 .weather-image {
     grid-column: span 5;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,4 +90,16 @@ body {
 .weather-image p {
     font-size: 2rem;
     font-weight: bold;
+}
+
+.five-days-forcast{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto 120px;
+    gap: 15px;
+    padding: 20px;   
+}
+
+.five-days-forcast-card {
+    
 }

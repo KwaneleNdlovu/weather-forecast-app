@@ -97,6 +97,7 @@ const weatherImages = {
 };
 
 const defaultWeather = {
+    loc: "--",
     temp: "--",
     humidity: "--",
     windSpeed: "--",
@@ -133,8 +134,16 @@ app.post("/search", async (req, res) => {
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&hourly=precipitation_probability`
         );
 
-        
+        const daily_weather = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=6`);
 
+        //console.log(daily_weather.data);
+        
+        const day = daily_weather.data.daily.time;
+        const code = daily_weather.data.daily.weather_code;
+        const max_temp = daily_weather.data.daily.temperature_2m_max;
+        const min_temp = daily_weather.data.daily.temperature_2m_min;
+        const precipitation = daily_weather.data.daily.precipitation_probability_max;
+       
         const current = weather_data.data.current;
 
         const temp = current.temperature_2m;
@@ -165,7 +174,8 @@ app.post("/search", async (req, res) => {
             dayNight : dayNight,
             description : description,
             rainChance : rainChance,
-            weatherImage : weatherImage
+            weatherImage : weatherImage,
+            loc : "in " + loc.toUpperCase(),
         });
         
     } catch(error) {    

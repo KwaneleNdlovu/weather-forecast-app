@@ -7,7 +7,7 @@
     <body>
         <div class = "weather">
             <div>
-                <h1>Today's Weather</h1>
+                <h1>Today's Weather <%= loc %></h1>
             </div>
 
             <div class = "search">
@@ -44,6 +44,22 @@
                     <p><%= dayNight %></p>
                 </div>
             </div>
+
+            <!-- <div class = "five-days-forcast">
+                <% for( let index = 0; index < array.length; index++ ) { %>
+                    <div class = "five-days-forcast-card">
+                        
+                    </div>
+                <% } %>
+            </div> -->
+            
         </div>
     </body>
 </html>
+ <!-- for(let i = 0; i < arr.length; i++){
+             const dayName = new Date(arr[i]).toLocaleDateString("en-US", {
+        weekday: "long"
+    });
+            console.log(dayName); 
+            
+        } -->
