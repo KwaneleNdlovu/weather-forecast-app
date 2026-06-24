@@ -1,5 +1,7 @@
 body {
     display: flex;
+    flex-direction: column;
+    gap: 15px;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -92,14 +94,39 @@ body {
     font-weight: bold;
 }
 
-.five-days-forcast{
+.five-days-forcast {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: auto 120px;
     gap: 15px;
-    padding: 20px;   
+    padding: 20px;
+    width: 1000px;
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
 }
 
 .five-days-forcast-card {
-    
+    background-color: #f5f8fc;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.temperature {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#condition {
+    margin-top: 0px;
+    padding: 0px;
+}
+
+.line {
+    width: 170px;
+    height: 1px;
+    background-color: black;
+    margin: 0 auto;
 }

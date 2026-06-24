@@ -44,22 +44,25 @@
                     <p><%= dayNight %></p>
                 </div>
             </div>
+        </div>
+        <div class = "five-days-forcast">
+            <% for( let index = 1; index < day.length; index++ ) { %>
+                <div class = "five-days-forcast-card">
+                    <div class = "days"><p><%= new Date(day[index]). toLocaleDateString("en-US", {weekday: "long"});%></p></div>
 
-            <!-- <div class = "five-days-forcast">
-                <% for( let index = 0; index < array.length; index++ ) { %>
-                    <div class = "five-days-forcast-card">
-                        
+                    <div class = "temperature">
+                        <p><%= max_temp[index] %>°C / <%= min_temp[index]%>°C</p>
+                        <img src = "<%= images[index] %>">
                     </div>
-                <% } %>
-            </div> -->
-            
+                    <p id="condition"><%= code_description[index] %></p>
+                    <div class = "line"></div>
+
+                    <div class = "conditions">
+                        <p>Wind speed: <%= wind[index] %></p>
+                        <p>Chances of Rain: <%= precipitation[index]  %></p>
+                    </div>
+                </div>
+            <% } %>
         </div>
     </body>
 </html>
- <!-- for(let i = 0; i < arr.length; i++){
-             const dayName = new Date(arr[i]).toLocaleDateString("en-US", {
-        weekday: "long"
-    });
-            console.log(dayName); 
-            
-        } -->

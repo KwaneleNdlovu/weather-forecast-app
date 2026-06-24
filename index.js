@@ -56,44 +56,44 @@ const weatherDescriptions = {
 };
 
 const weatherImages = {
-    0: "/images/weather/clear.gif",
+    0: "/images/weather/clear.svg",
 
-    1: "/images/weather/cloudy.gif",
-    2: "/images/weather/cloudy.gif",
-    3: "/images/weather/cloudy.gif",
+    1: "/images/weather/cloudy.svg",
+    2: "/images/weather/cloudy.svg",
+    3: "/images/weather/cloudy.svg",
 
-    45: "/images/weather/fog.gif",
-    48: "/images/weather/fog.gif",
+    45: "/images/weather/fog.svg",
+    48: "/images/weather/fog.svg",
 
-    51: "/images/weather/drizzle.gif",
-    53: "/images/weather/drizzle.gif",
-    55: "/images/weather/drizzle.gif",
+    51: "/images/weather/drizzle.svg",
+    53: "/images/weather/drizzle.svg",
+    55: "/images/weather/drizzle.svg",
 
-    56: "/images/weather/drizzle.gif",
-    57: "/images/weather/drizzle.gif",
+    56: "/images/weather/drizzle.svg",
+    57: "/images/weather/drizzle.svg",
 
-    61: "/images/weather/rain.gif",
-    63: "/images/weather/rain.gif",
-    65: "/images/weather/rain.gif",
+    61: "/images/weather/rain.svg",
+    63: "/images/weather/rain.svg",
+    65: "/images/weather/rain.svg",
 
-    66: "/images/weather/rain.gif",
-    67: "/images/weather/rain.gif",
+    66: "/images/weather/rain.svg",
+    67: "/images/weather/rain.svg",
 
-    71: "/images/weather/snow.gif",
-    73: "/images/weather/snow.gif",
-    75: "/images/weather/snow.gif",
-    77: "/images/weather/snow.gif",
+    71: "/images/weather/snow.svg",
+    73: "/images/weather/snow.svg",
+    75: "/images/weather/snow.svg",
+    77: "/images/weather/snow.svg",
 
-    80: "/images/weather/rain.gif",
-    81: "/images/weather/rain.gif",
-    82: "/images/weather/rain.gif",
+    80: "/images/weather/rain.svg",
+    81: "/images/weather/rain.svg",
+    82: "/images/weather/rain.svg",
 
-    85: "/images/weather/snow.gif",
-    86: "/images/weather/snow.gif",
+    85: "/images/weather/snow.svg",
+    86: "/images/weather/snow.svg",
 
-    95: "/images/weather/thunderstorm.gif",
-    96: "/images/weather/thunderstorm.gif",
-    99: "/images/weather/thunderstorm.gif"
+    95: "/images/weather/thunderstorm.svg",
+    96: "/images/weather/thunderstorm.svg",
+    99: "/images/weather/thunderstorm.svg"
 };
 
 const defaultWeather = {
@@ -104,8 +104,14 @@ const defaultWeather = {
     dayNight: "--",
     description: "Search for a city",
     rainChance: "--",
-    weatherImage: "/images/weather/clear.gif",
-    content: ""
+    weatherImage: "/images/weather/clear.svg",
+    day : ["--", "--", "--", "--", "--"],
+    code_description: ["--", "--", "--", "--", "--"],
+    max_temp : ["--", "--", "--", "--", "--"],
+    min_temp : ["--", "--", "--", "--", "--"],
+    precipitation : ["--", "--", "--", "--", "--"],
+    wind : ["--", "--", "--", "--", "--"],
+    images : ["/images/weather/clear.svg","/images/weather/clear.svg","/images/weather/clear.svg","/images/weather/clear.svg", "/images/weather/clear.svg"]
 };
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -134,16 +140,26 @@ app.post("/search", async (req, res) => {
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&hourly=precipitation_probability`
         );
 
-        const daily_weather = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=6`);
+        const daily_weather = await axios.get(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&forecast_days=6`
+        );
 
-        //console.log(daily_weather.data);
-        
         const day = daily_weather.data.daily.time;
         const code = daily_weather.data.daily.weather_code;
         const max_temp = daily_weather.data.daily.temperature_2m_max;
         const min_temp = daily_weather.data.daily.temperature_2m_min;
         const precipitation = daily_weather.data.daily.precipitation_probability_max;
-       
+        const wind = daily_weather.data.daily.wind_speed_10m_max;
+        
+        const code_description = [];
+        for(let index = 0; index < code.length; index++) {
+            code_description[index] = weatherDescriptions[code[index]];
+        }
+
+        const images = [];
+        for(let index = 0; index < code.length; index++) {
+            images[index] = weatherImages[code[index]];
+        }
         const current = weather_data.data.current;
 
         const temp = current.temperature_2m;
@@ -159,12 +175,9 @@ app.post("/search", async (req, res) => {
         let weatherImage;
 
         if (weatherCode === 0) {
-            weatherImage = isDay
-                ? "/images/weather/sunny.gif"
-                : "/images/weather/night.gif";
+            weatherImage = isDay ? "/images/weather/sunny.svg" : "/images/weather/night.svg";
         } else {
-            weatherImage =
-                weatherImages[weatherCode] || "/images/weather/default.gif";
+            weatherImage = weatherImages[weatherCode] || "/images/weather/clear.svg";
         }
 
         res.render("index.ejs", {
@@ -176,9 +189,16 @@ app.post("/search", async (req, res) => {
             rainChance : rainChance,
             weatherImage : weatherImage,
             loc : "in " + loc.toUpperCase(),
+            day,
+            code_description,
+            max_temp,
+            min_temp,
+            precipitation,
+            wind,
+            images
         });
         
-    } catch(error) {    
+    } catch(error) { 
         res.render("index.ejs", defaultWeather);
     }
 }); 
