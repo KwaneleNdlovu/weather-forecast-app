@@ -57,7 +57,9 @@ http://localhost:3000
 
 ## Future Improvements
 
-- Day mode/ Night mode
+- Make a very dope UI(tomorrow's objective)
+- Add hourly forecast
+- Day mode / Night mode
 - Weather alerts
 
 ## Author
