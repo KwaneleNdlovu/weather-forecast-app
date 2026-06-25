@@ -12,6 +12,7 @@ A weather forecasting web application built with Node.js, Express.js, EJS, Axios
 - Weather icons
 - Responsive user interface
 - 5-day weather forecast
+- Automatic Day / Night mode
 
 ## Technologies Used
 
@@ -57,7 +58,6 @@ http://localhost:3000
 
 ## Future Improvements
 
-- Make a very dope UI(tomorrow's objective)
 - Add hourly forecast
 - Day mode / Night mode
 - Weather alerts

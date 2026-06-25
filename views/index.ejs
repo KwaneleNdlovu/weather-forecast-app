@@ -1,65 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Weather Dashboard</title>
         <link rel="stylesheet" href="/styles/main.css">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel = "stylesheet">
     </head>
 
-    <body>
-        <div class = "weather">
+    <body class="<%= isDay ? 'day-theme' : '' %>">
+       
+        <div class="day-night-indicator">
+            <span class="icon"><%= isDay ? '☀️' : '🌙' %></span>
+            <span><%= isDay ? 'Day Mode' : 'Night Mode' %></span>
+        </div>
+
+        <div class="weather">
             <div>
                 <h1>Today's Weather <%= loc %></h1>
             </div>
 
-            <div class = "search">
-                <form action = "/search" id="the_form" method="post">
-                    <input type="text" id="location_input" name="location" placeholder="Enter a city">
+            <div class="search">
+                <form action="/search" id="the_form" method="post">
+                    <input type="text" id="location_input" name="location" placeholder="Enter a city...">
                     <button type="submit">Search</button>
                 </form>
             </div>
 
-            <div class = "weather-container">
+            <div class="weather-container">
                 <div class="weather-image">
                     <img src="<%= weatherImage %>" alt="<%= description %>">
-                    <p>Temperature: <%= temp %>°C</p>
+                    <p><%= temp %>°C</p>
                 </div>
                 
-                <div class = "weather-details">
-                    <p>Condition:</p>
+                <div class="weather-details">
+                    <p>Condition</p>
                     <p><%= description %></p>
                 </div>
-                <div class = "weather-details">
-                    <p>Humidity:</p>
+
+                <div class="weather-details">
+                    <p>Humidity</p>
                     <p><%= humidity %>%</p>
                 </div>
-                <div class = "weather-details">
-                    <p>Wind Speed:</p>
+
+                <div class="weather-details">
+                    <p>Wind Speed</p>
                     <p><%= windSpeed %> km/h</p>
                 </div>
-                <div class = "weather-details">
-                    <p>Chance of Rain:</p>
+
+                <div class="weather-details">
+                    <p>Chance of Rain</p>
                     <p><%= rainChance %>%</p>
                 </div>
-                <div class = "weather-details">
-                    <p>Time:</p>
+
+                <div class="weather-details">
+                    <p>Local Time</p>
                     <p><%= dayNight %></p>
                 </div>
             </div>
         </div>
-        <div class = "five-days-forcast">
+
+        <div class="five-days-forcast">
+            
             <% for( let index = 1; index < day.length; index++ ) { %>
-                <div class = "five-days-forcast-card">
-                    <div class = "days"><p><%= new Date(day[index]). toLocaleDateString("en-US", {weekday: "long"});%></p></div>
 
-                    <div class = "temperature">
-                        <p><%= max_temp[index] %>°C / <%= min_temp[index]%>°C</p>
-                        <img src = "<%= images[index] %>">
+                <div class="five-days-forcast-card">
+                    <div class="days">
+                        <p><%= new Date(day[index]).toLocaleDateString("en-US", {weekday: "long"}) %></p>
                     </div>
-                    <p id="condition"><%= code_description[index] %></p>
-                    <div class = "line"></div>
 
-                    <div class = "conditions">
-                        <p>Wind speed: <%= wind[index] %></p>
-                        <p>Chances of Rain: <%= precipitation[index]  %></p>
+                    <div class="temperature">
+                        <p><%= max_temp[index] %>°C / <%= min_temp[index] %>°C</p>
+                        <img src="<%= images[index] %>" alt="<%= code_description[index] %>">
+                    </div>
+
+                    <p id="condition"><%= code_description[index] %></p>
+
+                    <div class="line"></div>
+
+                    <div class="conditions">
+                        <p>Wind: <%= wind[index] %> km/h</p>
+                        <p>Rain: <%= precipitation[index] %>%</p>
                     </div>
                 </div>
             <% } %>

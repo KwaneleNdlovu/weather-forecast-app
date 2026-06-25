@@ -111,7 +111,8 @@ const defaultWeather = {
     min_temp : ["--", "--", "--", "--", "--"],
     precipitation : ["--", "--", "--", "--", "--"],
     wind : ["--", "--", "--", "--", "--"],
-    images : ["/images/weather/clear.svg","/images/weather/clear.svg","/images/weather/clear.svg","/images/weather/clear.svg", "/images/weather/clear.svg"]
+    images : ["/images/weather/clear.svg","/images/weather/clear.svg","/images/weather/clear.svg","/images/weather/clear.svg", "/images/weather/clear.svg"],
+    isDay : 0
 };
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -195,7 +196,8 @@ app.post("/search", async (req, res) => {
             min_temp,
             precipitation,
             wind,
-            images
+            images,
+            isDay
         });
         
     } catch(error) { 
