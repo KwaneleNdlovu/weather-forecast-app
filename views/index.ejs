@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Weather Dashboard</title>
+        <title>Weather App</title>
         <link rel="stylesheet" href="/styles/main.css">
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel = "stylesheet">
     </head>
@@ -61,6 +61,28 @@
             </div>
         </div>
 
+        <div class = "hourly-forcast">
+            <% for( let index = currentHour; index < currentHour + 24; index++ ) { %>
+                <div class = "hourly-forcast-card">
+                    <div class = "hourly-time">
+                        <p><%= hourly_time[index] ? hourly_time[index].slice(11) : "--:--" %></p>
+                    </div>
+
+                    <div class = "hourly-temp">
+                        <p><%= hourly_temp[index] ?  hourly_temp[index] : "--"  %></p>
+                    </div>
+
+                    <div class = "hourly-image">
+                        <img src = "<%= hourly_images[index] ? hourly_images[index] : "/images/weather/default.svg" %>" alt="-">
+                    </div>
+
+                    <div class = "hourly_precipitation">
+                        <p>Rain: <%= hourly_precipitation[index] ? hourly_precipitation[index] : "--"  %>%</p>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
         <div class="five-days-forcast">
             
             <% for( let index = 1; index < day.length; index++ ) { %>
@@ -72,7 +94,7 @@
 
                     <div class="temperature">
                         <p><%= max_temp[index] %>°C / <%= min_temp[index] %>°C</p>
-                        <img src="<%= images[index] %>" alt="<%= code_description[index] %>">
+                        <img src="<%= images[index] ? images[index] : "/images/weather/default.svg"%>" alt="<%= code_description[index] %>">
                     </div>
 
                     <p id="condition"><%= code_description[index] %></p>
