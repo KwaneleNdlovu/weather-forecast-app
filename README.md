@@ -14,6 +14,7 @@ A weather forecasting web application built with Node.js, Express.js, EJS, Axios
 - 5-day weather forecast
 - Automatic Day / Night mode
 - Hourly forecast
+- Use Current Location
 
 ## Technologies Used
 
@@ -59,7 +60,6 @@ http://localhost:3000
 
 ## Future Improvements
 
-- Use current location
 - Weather alerts
 - Refactor code
 

@@ -124,7 +124,11 @@ body::before {
     z-index: 1;
     width: 100%;
     max-width: 500px;
-    margin-bottom: 0;
+    margin: 0 auto 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
 }
 
 #the_form {
@@ -186,6 +190,40 @@ body::before {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px var(--shadow-color);
     background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
+}
+
+/* Current Location Button */
+#current-location {
+    width: 100%;
+    padding: 14px 25px;
+    border-radius: 50px;
+    border: 2px solid var(--glass-border);
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+#current-location:hover {
+    background: var(--card-hover-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--shadow-color);
+    border-color: var(--accent-1);
+}
+
+#current-location:active {
+    transform: translateY(0);
 }
 
 /* Weather Card */
@@ -316,9 +354,7 @@ body::before {
     transition: color 0.4s ease;
 }
 
-/* ===========================================
-   HOURLY FORECAST
-   =========================================== */
+/* Hourly Forecast*/
 .hourly-forcast {
     position: relative;
     z-index: 1;
@@ -342,7 +378,7 @@ body::before {
     scroll-behavior: smooth;
 }
 
-/* Custom scrollbar for Chrome/Safari/Edge */
+/* Custom scrollbar for*/
 .hourly-forcast::-webkit-scrollbar {
     height: 8px;
 }
@@ -621,9 +657,6 @@ body:not(.day-theme)::after {
 }
 
 /* Responsive Design */
-/* ===========================================
-   RESPONSIVE DESIGN
-   =========================================== */
 @media (max-width: 768px) {
     body {
         padding: 1rem;
@@ -659,6 +692,15 @@ body:not(.day-theme)::after {
 
     .weather-image p {
         font-size: 2.5rem;
+    }
+
+    .search {
+        max-width: 100%;
+    }
+
+    #current-location {
+        font-size: 0.9rem;
+        padding: 12px 20px;
     }
 
     .hourly-forcast {
@@ -735,6 +777,11 @@ body:not(.day-theme)::after {
         font-size: 0.85rem;
     }
     
+    #current-location {
+        font-size: 0.85rem;
+        padding: 10px 18px;
+    }
+
     .weather h1 {
         font-size: 1.3rem;
     }

@@ -11,6 +11,11 @@
 
     <body class="<%= isDay ? 'day-theme' : '' %>">
        
+        <form id="location-form" action="/current-location" method="POST">
+            <input type="hidden" name="lat" id="lat">
+            <input type="hidden" name="lon" id="lon">
+        </form>
+
         <div class="day-night-indicator">
             <span class="icon"><%= isDay ? '☀️' : '🌙' %></span>
             <span><%= isDay ? 'Day Mode' : 'Night Mode' %></span>
@@ -26,6 +31,9 @@
                     <input type="text" id="location_input" name="location" placeholder="Enter a city...">
                     <button type="submit">Search</button>
                 </form>
+                <button type="button" id="current-location">
+                    📍 Use Current Location
+                </button>
             </div>
 
             <div class="weather-container">
@@ -108,5 +116,30 @@
                 </div>
             <% } %>
         </div>
+
+        <script>
+            const button = document.getElementById("current-location");
+
+            button.addEventListener("click", () => {
+                if(!navigator.geolocation) {
+                    alert("Geolocation is not supported.")
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+
+                        document.getElementById("lat").value = position.coords.latitude;
+                        document.getElementById("lon").value = position.coords.longitude;
+
+                        document.getElementById("location-form").submit();
+                    }, 
+
+                    (error) => {
+                        alert("Unable to get your location.")
+                    }
+                );
+            });
+        </script>
     </body>
 </html>

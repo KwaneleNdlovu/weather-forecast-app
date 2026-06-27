@@ -230,6 +230,106 @@ app.post("/search", async (req, res) => {
     }
 }); 
 
+app.post("/current-location", async (req, res) => {
+
+    const lat = req.body.lat;
+    const lon = req.body.lon;
+
+      try{
+
+        const weather_data = await axios.get(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&hourly=precipitation_probability`
+        );
+
+        const daily_weather = await axios.get(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&forecast_days=6`
+        );
+
+        const hourly_data = await axios.get(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,precipitation_probability`
+        );
+
+        const location = await axios.get(
+    `       ${URL}/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`
+        );
+        
+        const now = new Date();
+        const currentHour = now.getHours();
+        
+        const hourly_time = hourly_data.data.hourly.time;
+        const hourly_temp = hourly_data.data.hourly.temperature_2m;
+        const hourly_code = hourly_data.data.hourly.weather_code;
+        const hourly_precipitation = hourly_data.data.hourly.precipitation_probability;
+
+        const hourly_images = [];
+        for(let index = 0; index < hourly_code.length; index++) {
+            hourly_images[index] = weatherImages[hourly_code[index]];
+        }
+
+        const day = daily_weather.data.daily.time;
+        const code = daily_weather.data.daily.weather_code;
+        const max_temp = daily_weather.data.daily.temperature_2m_max;
+        const min_temp = daily_weather.data.daily.temperature_2m_min;
+        const precipitation = daily_weather.data.daily.precipitation_probability_max;
+        const wind = daily_weather.data.daily.wind_speed_10m_max;
+        
+        const code_description = [];
+        const images = [];
+        for(let index = 0; index < code.length; index++) {
+            code_description[index] = weatherDescriptions[code[index]];
+            images[index] = weatherImages[code[index]];
+        }
+
+        const current = weather_data.data.current;
+
+        const temp = current.temperature_2m;
+        const humidity = current.relative_humidity_2m;
+        const weatherCode = current.weather_code;
+        const windSpeed = current.wind_speed_10m;
+        const isDay = current.is_day;
+
+        const description = weatherDescriptions[weatherCode] || "Unknown Weather";
+        const rainChance = weather_data.data.hourly.precipitation_probability[currentHour];
+        const dayNight = isDay ? "Day" : "Night";
+
+        let weatherImage;
+
+        if (weatherCode === 0) {
+            weatherImage = isDay ? "/images/weather/sunny.svg" : "/images/weather/night.svg";
+        } else {
+            weatherImage = weatherImages[weatherCode] || "/images/weather/clear.svg";
+        }
+
+        res.render("index.ejs", {
+            temp : temp,
+            humidity : humidity,
+            windSpeed : windSpeed,
+            dayNight : dayNight,
+            description : description,
+            rainChance : rainChance,
+            weatherImage : weatherImage,
+            loc : "in " + location.data[0].name,
+            day,
+            code_description,
+            max_temp,
+            min_temp,
+            precipitation,
+            wind,
+            images,
+            isDay,
+            currentHour,
+            hourly_time,
+            hourly_images,
+            hourly_temp,
+            hourly_precipitation
+        });
+        
+    } catch(error) { 
+        res.render("index.ejs", defaultWeather);
+    }
+        
+});
+
 app.listen(port, () =>{
     console.log(`Server running on port ${port}`)
 })
