@@ -31,7 +31,7 @@ A weather forecasting web application built with Node.js, Express.js, EJS, Axios
 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/weather-forecast-app.git
+git clone https://github.com/KwaneleNdlovu/weather-forecast-app.git
 ```
 
 2. Navigate to the project folder
